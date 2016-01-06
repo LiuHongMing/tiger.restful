@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>tiger</groupId>
+    <artifactId>restful</artifactId>
+    <version>1.0.1</version>
+    <packaging>war</packaging>
+
+    <description>RESTful</description>
+
+    <developers>
+        <developer>
+            <name>jason.liuhongming</name>
+        </developer>
+    </developers>
+
+    <properties>
+        <jdk.version>1.7</jdk.version>
+
+        <!-- dependencies -->
+        <javassist.version>3.18.0-GA</javassist.version>
+        <asm.version>3.3.1</asm.version>
+        <cglib.version>2.2</cglib.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <google.guava.version>18.0</google.guava.version>
+        <google.gson.version>2.3</google.gson.version>
+        <joda.version>2.3</joda.version>
+        <junit.version>4.11</junit.version>
+        <netty.version>4.0.28.Final</netty.version>
+        <zookeeper.version>3.4.7</zookeeper.version>
+        <spring.version>4.2.2.RELEASE</spring.version>
+        <objenesis.version>2.2</objenesis.version>
+        <slf4j-log4j12.verison>1.7.12</slf4j-log4j12.verison>
+        <hessian.version>4.0.38</hessian.version>
+        <dubbo.version>2.4.10</dubbo.version>
+        <fastjson.verion>1.2.7</fastjson.verion>
+        <druid.version>1.0.16</druid.version>
+        <atomikos.version>3.9.3</atomikos.version>
+        <jta.version>1.1</jta.version>
+        <mysql.version>5.1.31</mysql.version>
+        <zkclient.version>0.4</zkclient.version>
+        <jedis.version>2.4.2</jedis.version>
+        <mybatis.version>3.2.2</mybatis.version>
+        <mybatis-spring.version>1.2.0</mybatis-spring.version>
+        <mysql-connector-java.version>5.0.7</mysql-connector-java.version>
+
+        <!-- plugins -->
+        <clean.plugin.version>2.4.1</clean.plugin.version>
+        <compiler.plugin.version>3.1</compiler.plugin.version>
+        <resources.plugin.version>2.6</resources.plugin.version>
+        <dependency.plugin.version>2.1</dependency.plugin.version>
+        <surefire.plugin.version>2.16</surefire.plugin.version>
+        <jar.plugin.version>2.4</jar.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- 编译 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            <!-- 测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+                <configuration>
+                    <!-- 命令参数 -->
+                    <argLine>-Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8
+                    </argLine>
+                    <!-- Add custom resources/jars to your classpath -->
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+                    </additionalClasspathElements>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <!-- 忽略测试 -->
+                    <skip>true</skip>
+                    <!-- 忽略测试异常 -->
+                    <!-- <testFailureIgnore>true</testFailureIgnore> -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 依赖 -->
+    <dependencies>
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.verison}</version>
+        </dependency>
+
+        <!-- javassist -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
+        </dependency>
+
+        <!-- asm -->
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+
+        <!-- cglib -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+        </dependency>
+
+        <!-- netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+        <!-- commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${commons-collections.version}</version>
+        </dependency>
+
+        <!-- google -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${google.guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${google.gson.version}</version>
+        </dependency>
+
+        <!-- joda -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.version}</version>
+        </dependency>
+
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.verion}</version>
+        </dependency>
+
+        <!-- dubbo -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${dubbo.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- zkclient -->
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>${zkclient.version}</version>
+        </dependency>
+
+        <!-- hessian -->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>${hessian.version}</version>
+        </dependency>
+
+        <!-- objenesis -->
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>${objenesis.version}</version>
+        </dependency>
+
+        <!-- zookeeper -->
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>${zookeeper.version}</version>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
+        <!-- jta -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>${jta.version}</version>
+        </dependency>
+
+        <!-- atomikos -->
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jta</artifactId>
+            <version>${atomikos.version}</version>
+        </dependency>
+
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+        </dependency>
+
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring.version}</version>
+        </dependency>
+
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+
+        <!-- alicom -->
+        <!--<dependency>-->
+            <!--<groupId>com.alicom</groupId>-->
+            <!--<artifactId>alicom-frame</artifactId>-->
+            <!--<version>1.0.7</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+</project>
