@@ -18,5 +18,8 @@
     </settings>
 
     <!-- Continue going here -->
+    <typeAliases>
+        <package name="com.tiger.restful.mapper.model"/>
+    </typeAliases>
 
 </configuration>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="dest" value="\${catalina.base:-/tmp}/logs"/>
-    <property name="layoutPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c\\(%F:%L\\) [%p] --> %m %n%ex"/>
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <property name="layoutPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c\\(%F:%L\\) --> %m %n%ex"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
         <encoder>
             <pattern>${layoutPattern}</pattern>
@@ -12,11 +13,13 @@
         </filter>
     </appender>
 
-    <logger name="org.apache" level="DEBUG"/>
-    <logger name="org.springframework" level="DEBUG"/>
-    <logger name="com.alibaba.dubbo" level="DEBUG"/>
+    <logger name="org.apache"           level="DEBUG"/>
+    <logger name="org.apache.zookeeper" level="INFO"/>
+    <logger name="org.springframework"  level="INFO"/>
+    <logger name="com.alibaba.dubbo"    level="INFO"/>
+    <logger name="org.apache.ibatis"    level="INFO"/>
 
-    <root level="DEBUG,INFO,ERROR">
-        <appender-ref ref="console"/>
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

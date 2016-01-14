@@ -20,34 +20,59 @@
     <properties>
         <jdk.version>1.7</jdk.version>
 
-        <!-- dependencies -->
+        <!-- test -->
+        <junit.version>4.11</junit.version>
+
+        <!-- log -->
+        <slf4j.version>1.7.3</slf4j.version>
+        <logback.version>1.1.3</logback.version>
+        <log4j2.version>2.5</log4j2.version>
+
+        <!-- bytecode -->
         <javassist.version>3.18.0-GA</javassist.version>
         <asm.version>3.3.1</asm.version>
         <cglib.version>2.2</cglib.version>
+
+        <!-- aspect -->
+        <aopalliance.version>1.0</aopalliance.version>
+        <aspectjrt.version>1.8.4</aspectjrt.version>
+
+        <!-- commons -->
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>3.2.1</commons-collections.version>
+
+        <!-- google -->
         <google.guava.version>18.0</google.guava.version>
         <google.gson.version>2.3</google.gson.version>
+
         <joda.version>2.3</joda.version>
-        <junit.version>4.11</junit.version>
         <netty.version>4.0.28.Final</netty.version>
-        <zookeeper.version>3.4.7</zookeeper.version>
-        <spring.version>4.2.2.RELEASE</spring.version>
+
+        <!-- zookeeper -->
+        <zookeeper.version>3.4.6</zookeeper.version>
+        <curator.version>3.0.0</curator.version>
+
         <objenesis.version>2.2</objenesis.version>
-        <slf4j-log4j12.verison>1.7.12</slf4j-log4j12.verison>
         <hessian.version>4.0.38</hessian.version>
         <dubbo.version>2.4.10</dubbo.version>
         <fastjson.verion>1.2.7</fastjson.verion>
         <druid.version>1.0.16</druid.version>
         <atomikos.version>3.9.3</atomikos.version>
         <jta.version>1.1</jta.version>
-        <mysql.version>5.1.31</mysql.version>
+        <mysql.version>5.1.35</mysql.version>
         <zkclient.version>0.4</zkclient.version>
         <jedis.version>2.4.2</jedis.version>
-        <mybatis.version>3.2.2</mybatis.version>
-        <mybatis-spring.version>1.2.0</mybatis-spring.version>
-        <mysql-connector-java.version>5.0.7</mysql-connector-java.version>
+
+        <!-- mybatis -->
+        <mybatis.version>3.3.0</mybatis.version>
+        <mybatis-spring.version>1.2.3</mybatis-spring.version>
+
+        <!-- servlet -->
+        <servlet-api.version>3.1.0</servlet-api.version>
+
+        <!-- spring -->
+        <spring.version>4.2.2.RELEASE</spring.version>
 
         <!-- plugins -->
         <clean.plugin.version>2.4.1</clean.plugin.version>
@@ -56,11 +81,43 @@
         <dependency.plugin.version>2.1</dependency.plugin.version>
         <surefire.plugin.version>2.16</surefire.plugin.version>
         <jar.plugin.version>2.4</jar.plugin.version>
+        <war.plugin.version>2.6</war.plugin.version>
+        <mybatis-generator.version>1.3.2</mybatis-generator.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>develop</env>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>build/**</exclude>
+                </excludes>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <filters>
+            <filter>${basedir}/src/main/resources/build/filters/${env}.properties</filter>
+        </filters>
+
         <plugins>
-            <!-- 编译 -->
+            <!-- compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -71,15 +128,24 @@
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
-            <!-- 测试 -->
+            <!-- war -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${war.plugin.version}</version>
+                <configuration>
+                    <warName>${project.build.finalName}</warName>
+                    <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+                </configuration>
+            </plugin>
+            <!-- surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
                 <configuration>
                     <!-- 命令参数 -->
-                    <argLine>-Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8
-                    </argLine>
+                    <argLine>-Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8</argLine>
                     <!-- Add custom resources/jars to your classpath -->
                     <additionalClasspathElements>
                         <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
@@ -92,6 +158,25 @@
                     <!-- 忽略测试异常 -->
                     <!-- <testFailureIgnore>true</testFailureIgnore> -->
                 </configuration>
+            </plugin>
+            <!-- mybatis-generator -->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>${mybatis-generator.version}</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                    <configurationFile>${basedir}/src/main/resources/build/mybatis/generator-config.xml</configurationFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>Generate MyBatis Artifacts</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -108,9 +193,28 @@
         <!-- slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j-log4j12.verison}</version>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
+
+        <!-- logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- log4j2 -->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.logging.log4j</groupId>-->
+        <!--<artifactId>log4j-api</artifactId>-->
+        <!--<version>${log4j2.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.logging.log4j</groupId>-->
+        <!--<artifactId>log4j-core</artifactId>-->
+        <!--<version>${log4j2.version}</version>-->
+        <!--</dependency>-->
 
         <!-- javassist -->
         <dependency>
@@ -196,13 +300,6 @@
             </exclusions>
         </dependency>
 
-        <!-- zkclient -->
-        <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>${zkclient.version}</version>
-        </dependency>
-
         <!-- hessian -->
         <dependency>
             <groupId>com.caucho</groupId>
@@ -222,6 +319,21 @@
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>${zookeeper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>${curator.version}</version>
         </dependency>
 
         <!-- spring -->
@@ -271,6 +383,20 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- spring mvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+        </dependency>
+
         <!-- druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -317,20 +443,35 @@
             <artifactId>mybatis-spring</artifactId>
             <version>${mybatis-spring.version}</version>
         </dependency>
-
-        <!-- mysql -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>${mybatis-generator.version}</version>
         </dependency>
 
         <!-- alicom -->
         <!--<dependency>-->
-            <!--<groupId>com.alicom</groupId>-->
-            <!--<artifactId>alicom-frame</artifactId>-->
-            <!--<version>1.0.7</version>-->
+        <!--<groupId>com.alicom</groupId>-->
+        <!--<artifactId>alicom-frame</artifactId>-->
+        <!--<version>1.0.7</version>-->
         <!--</dependency>-->
+
+        <!-- aspectj -->
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>${aopalliance.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectjrt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjrt.version}</version>
+        </dependency>
 
     </dependencies>
 

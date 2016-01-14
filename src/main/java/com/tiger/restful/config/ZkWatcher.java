@@ -1,14 +1,6 @@
 package com.tiger.restful.config;
 
+public class ZkWatcher extends AbstractPropertyConfigurer {
 
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-
-public class ZkWatcher extends AbstractPropertyConfigurer implements Watcher {
-
-    @Override
-    public void process(WatchedEvent event) {
-
-    }
 
 }
