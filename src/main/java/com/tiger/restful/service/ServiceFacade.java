@@ -1,7 +1,7 @@
 package com.tiger.restful.service;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ServiceFacade {
@@ -13,8 +13,16 @@ public class ServiceFacade {
     private BookService bookService;
 
     public void addUserBook() throws Exception {
+        try {
+            bookService.addBookSpringPropagateNested();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         userService.addUser();
-        bookService.addBook();
+        //bookService.addBook();
+
+        //throw new RuntimeException("throw runtime exception in outter transaction!");
     }
 
 }
