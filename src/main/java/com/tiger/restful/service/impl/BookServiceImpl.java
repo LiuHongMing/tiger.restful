@@ -33,4 +33,18 @@ public class BookServiceImpl implements BookService {
         addBook();
     }
 
+    @Transactional(propagation = Propagation.NEVER)
+    public void addBookSpringPropagateNever() throws Exception {
+        addBook();
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void addBookSpringPropagateSupports() throws Exception {
+        addBook();
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void addBookSpringPropagateNotSupports() throws Exception {
+        addBook();
+    }
 }
