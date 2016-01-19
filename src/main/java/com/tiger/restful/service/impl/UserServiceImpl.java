@@ -7,6 +7,8 @@ import com.tiger.restful.mapper.model.TUser;
 import com.tiger.restful.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,16 +19,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TBookMapper bookMapper;
 
-
+    @Transactional(propagation = Propagation.REQUIRED)
     public void addUser() throws Exception {
         TUser user = new TUser();
         user.setName("addUser-duck");
         userMapper.insert(user);
 
-//        TBook book = new TBook();
-//        book.setId(1);
-//        book.setName("addUser-addBook-duck-j2ee");
-//        bookMapper.insert(book);
+        TBook book = new TBook();
+        book.setId(1);
+        book.setName("addUser-addBook-duck-j2ee");
+        bookMapper.insert(book);
     }
 
 }

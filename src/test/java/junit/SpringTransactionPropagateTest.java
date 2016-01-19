@@ -30,12 +30,16 @@ public class SpringTransactionPropagateTest {
     @Test
     public void testAddBook() throws Exception {
         bookService.addBook();
-        // bookService.addBookSpringPropagateNested();
     }
 
     @Test
     public void testAddBookSpringPropagateMandatory() throws Exception {
         bookService.addBookSpringPropagateMandatory();
+    }
+
+    @Test
+    public void testAddBookSpringPropagateSupports() throws Exception {
+        bookService.addBookSpringPropagateSupports();
     }
 
     @Test

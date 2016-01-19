@@ -15,12 +15,13 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private TBookMapper bookMapper;
 
+    // 会覆盖掉XML和接口注释中声明的配置
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void addBook() throws Exception {
         TBook book = new TBook();
         book.setName("addBook-duck-j2ee");
         bookMapper.insert(book);
-        throw new RuntimeException("throw runtime exception in transaction");
+        //throw new RuntimeException("throw runtime exception in transaction");
     }
 
     @Transactional(propagation = Propagation.MANDATORY)

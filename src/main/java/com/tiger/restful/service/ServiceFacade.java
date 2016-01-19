@@ -20,9 +20,6 @@ public class ServiceFacade {
         }
 
         userService.addUser();
-        //bookService.addBook();
-
-        //throw new RuntimeException("throw runtime exception in outter transaction!");
     }
 
 }
