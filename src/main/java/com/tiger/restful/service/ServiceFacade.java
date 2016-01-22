@@ -12,14 +12,13 @@ public class ServiceFacade {
     @Autowired
     private BookService bookService;
 
-    public void addUserBook() throws Exception {
-        try {
-            bookService.addBookSpringPropagateNested();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Autowired
+    private OrderService orderService;
 
+    public void addUserBook() throws Exception {
         userService.addUser();
+        bookService.addBook();
+        orderService.addOrder();
     }
 
 }

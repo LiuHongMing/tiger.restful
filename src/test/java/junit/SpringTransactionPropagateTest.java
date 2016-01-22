@@ -1,6 +1,7 @@
 package junit;
 
 import com.tiger.restful.service.BookService;
+import com.tiger.restful.service.OrderService;
 import com.tiger.restful.service.ServiceFacade;
 import com.tiger.restful.service.UserService;
 import org.junit.Test;
@@ -20,6 +21,9 @@ public class SpringTransactionPropagateTest {
     BookService bookService;
 
     @Autowired
+    OrderService orderService;
+
+    @Autowired
     ServiceFacade serviceFacade;
 
     @Test
@@ -30,6 +34,11 @@ public class SpringTransactionPropagateTest {
     @Test
     public void testAddBook() throws Exception {
         bookService.addBook();
+    }
+
+    @Test
+    public void testAddOrder() throws Exception {
+        orderService.addOrder();
     }
 
     @Test
