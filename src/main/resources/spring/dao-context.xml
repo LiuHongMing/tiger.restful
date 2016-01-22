@@ -2,73 +2,95 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-           http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
-    
-    <!-- datasource -->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
-          destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url"
-                  value="jdbc:mysql://172.16.230.154:3306/tiger_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
-        <property name="username" value="root"/>
-        <property name="password" value="123456"/>
-        <!-- 初始化连接大小 -->
-        <property name="initialSize" value="10"/>
-        <!-- 连接池最大使用连接数量 -->
-        <property name="maxActive" value="100"/>
-        <!-- 连接池最小空闲 -->
-        <property name="minIdle" value="0"/>
-        <!-- 获取连接最大等待时间 -->
-        <property name="maxWait" value="60000"/>
-        <property name="validationQuery" value="SELECT 1"/>
-        <property name="testOnBorrow" value="false"/>
-        <property name="testOnReturn" value="false"/>
-        <property name="testWhileIdle" value="true"/>
-        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-        <property name="minEvictableIdleTimeMillis" value="300000"/>
-        <!-- 打开removeAbandoned功能 -->
-        <property name="removeAbandoned" value="true"/>
-        <!-- 1800秒，也就是30分钟 -->
-        <property name="removeAbandonedTimeout" value="1800"/>
-        <!-- 关闭abanded连接时输出错误日志 -->
-        <property name="logAbandoned" value="true"/>
-        <!-- 监控数据库 -->
-        <property name="filters" value="mergeStat"/>
+           http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <!-- XA数据源 -->
+    <bean id="atomikosDataSource_1" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
+        <property name="uniqueResourceName" value="tiger_1"/>
+        <property name="xaProperties">
+            <props>
+                <prop key="url">
+                    jdbc:mysql://172.16.230.154:3306/tiger_1?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+                </prop>
+                <prop key="user">root</prop>
+                <prop key="password">123456</prop>
+            </props>
+        </property>
+        <property name="poolSize" value="10"/>
+        <property name="reapTimeout" value="20000"/>
     </bean>
 
-    <!-- mybatis -->
-    <mybatis:scan base-package="com.tiger.restful.mapper"/>
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="sqlSessionFactory_1" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="atomikosDataSource_1"/>
         <property name="configLocation" value="classpath:orm/mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.tiger.restful.user.model"/>
         <property name="mapperLocations">
             <list>
-                <value>classpath*:com/tiger/restful/mapper/*.xml</value>
+                <value>classpath*:com/tiger/restful/user/mapper/*.xml</value>
             </list>
         </property>
     </bean>
+    <mybatis:scan base-package="com.tiger.restful.user.mapper" factory-ref="sqlSessionFactory_1"/>
 
-    <!-- transaction -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="atomikosDataSource_2" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+          init-method="init" destroy-method="close">
+        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
+        <property name="uniqueResourceName" value="tiger_2"/>
+        <property name="xaProperties">
+            <props>
+                <prop key="url">
+                    jdbc:mysql://172.16.230.154:3306/tiger_2?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+                </prop>
+                <prop key="user">root</prop>
+                <prop key="password">123456</prop>
+            </props>
+        </property>
+        <property name="poolSize" value="10"/>
+        <property name="reapTimeout" value="20000"/>
     </bean>
 
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <bean id="sqlSessionFactory_2" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="atomikosDataSource_2"/>
+        <property name="configLocation" value="classpath:orm/mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.tiger.restful.order.model"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:com/tiger/restful/order/mapper/*.xml</value>
+            </list>
+        </property>
+    </bean>
+    <mybatis:scan base-package="com.tiger.restful.order.mapper" factory-ref="sqlSessionFactory_2"/>
+
+    <!-- atomikos 事务管理器 -->
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+          init-method="init" destroy-method="close" p:forceShutdown="true"/>
+
+    <bean id="atomikosUserTranscation" class="com.atomikos.icatch.jta.UserTransactionImp" p:transactionTimeout="300"/>
+
+    <!-- spring 事务管理器 -->
+    <bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomikosTransactionManager"/>
+        <property name="userTransaction" ref="atomikosUserTranscation"/>
+        <property name="allowCustomIsolationLevels" value="true"/>
+    </bean>
+
+    <!-- 事务通知 -->
+    <tx:advice id="txAdvice" transaction-manager="jtaTransactionManager">
         <tx:attributes>
-            <tx:method name="addUser" propagation="REQUIRED"/>
-            <tx:method name="addBook" propagation="REQUIRED"/>
             <tx:method name="addUserBook" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <!--<tx:jta-transaction-manager />-->
+    <!-- 开启注解方式定义事务 -->
+    <tx:annotation-driven transaction-manager="jtaTransactionManager"/>
 
 </beans>
