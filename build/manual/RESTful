@@ -1,0 +1,11 @@
+
+RESTful规范，接口示例:
+
+http://api.weibo.com(1)/2(2)/statuses(3)/home_time(4).json(5)?source=appkey(6)
+
+1、域
+2、版本
+3、资源类
+4、接口名称
+5、返回值格式
+6、参数

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" name="RESTFul" monitorInterval="30">
+
+    <Appenders>
+        <Console name="STDOUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %logger{36}(%F\:%L) - %msg%n"/>
+        </Console>
+        <File name="apiFile" fileName="log/api.log" append="false">
+            <PatternLayout pattern="%d %p %C{1.} [%t] - %m%n"/>
+        </File>
+        <File name="jerseyFile" fileName="log/jersey.log">
+            <PatternLayout pattern="%d %p %C{1.} [%t] - %m%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.tiger.restful.api.resource" level="INFO" additivity="false">
+            <AppenderRef ref="apiFile"/>
+        </Logger>
+        <Logger name="org.glassfish.jersey.filter" level="INFO" additivity="false">
+            <AppenderRef ref="jerseyFile"/>
+        </Logger>
+        <Logger name="org.apache" level="${logger.org.apache.level}"/>
+        <Logger name="org.springframework" level="${logger.org.springframework.level}"/>
+        <Logger name="org.mybatis" level="${logger.org.mybatis.level}"/>
+        <Logger name="com.atomikos" level="${logger.com.atomikos.level}"/>
+
+        <Root level="${logger.root.level}">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>
