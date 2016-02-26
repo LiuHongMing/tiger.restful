@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" name="RESTFul" monitorInterval="30">
+<Configuration status="debug" monitorInterval="30">
+
+    <Properties>
+        <Property name="log_pattern">%d [%level] %logger{36}(%F\:%L) [%t] - %msg%throwable%n</Property>
+        <Property name="log_home">F:/Workspace/tiger.restful/logs</Property>
+        <Property name="out_log">${log_home}/out.log</Property>
+        <Property name="api_log">${log_home}/api.log</Property>
+    </Properties>
 
     <Appenders>
         <Console name="STDOUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %logger{36}(%F\:%L) - %msg%n"/>
+            <PatternLayout pattern="${log_pattern}"/>
         </Console>
-        <File name="apiFile" fileName="log/api.log" append="false">
-            <PatternLayout pattern="%d %p %C{1.} [%t] - %m%n"/>
+        <File name="outFile" fileName="${out_log}" append="true">
+            <PatternLayout pattern="${log_pattern}"/>
         </File>
-        <File name="jerseyFile" fileName="log/jersey.log">
-            <PatternLayout pattern="%d %p %C{1.} [%t] - %m%n"/>
+        <File name="apiFile" fileName="${api_log}" append="true">
+            <PatternLayout pattern="${log_pattern}"/>
         </File>
     </Appenders>
 
     <Loggers>
+        <Logger name="logging.filter" level="DEBUG">
+            <AppenderRef ref="outFile"/>
+        </Logger>
         <Logger name="com.tiger.restful.api.resource" level="INFO" additivity="false">
             <AppenderRef ref="apiFile"/>
-        </Logger>
-        <Logger name="org.glassfish.jersey.filter" level="INFO" additivity="false">
-            <AppenderRef ref="jerseyFile"/>
         </Logger>
         <Logger name="org.apache" level="${logger.org.apache.level}"/>
         <Logger name="org.springframework" level="${logger.org.springframework.level}"/>
         <Logger name="org.mybatis" level="${logger.org.mybatis.level}"/>
         <Logger name="com.atomikos" level="${logger.com.atomikos.level}"/>
-
-        <Root level="${logger.root.level}">
+        <Root level="INFO">
             <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>

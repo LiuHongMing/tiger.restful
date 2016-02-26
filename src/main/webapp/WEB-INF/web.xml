@@ -9,12 +9,12 @@
         <param-value>classpath:spring/root-context.xml</param-value>
     </context-param>
 
-    <!--<listener>-->
-        <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
-    <!--</listener>-->
-    <!--<listener>-->
-        <!--<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>-->
-    <!--</listener>-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
 
     <servlet>
         <servlet-name>jerseyServlet</servlet-name>
@@ -30,7 +30,7 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
-    <error-page>
-        <location>/api/error/404</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<location>/api/error/404</location>-->
+    <!--</error-page>-->
 </web-app>
