@@ -1,9 +1,11 @@
 package junit;
 
 import java.util.logging.Logger;
+
 import org.apache.logging.log4j.jul.LogManager;
 
-interface Log {}
+interface Log {
+}
 
 public class Log4j2Jul implements Log {
 
@@ -11,8 +13,7 @@ public class Log4j2Jul implements Log {
         System.out.println("Log downward Log4j2Jul");
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Logger LOGGER = new LogManager().getLogger("logging.filter");
         LOGGER.info("你好啊");
 
