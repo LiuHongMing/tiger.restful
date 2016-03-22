@@ -4,4 +4,11 @@
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--自定义属性配置器，优先加载-->
+    <bean id="propertyConfigurer" class="com.tiger.restful.config.ZkWatcher">
+        <property name="location" value="classpath:conf.properties"/>
+        <property name="order" value="1"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
 </beans>

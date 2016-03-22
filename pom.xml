@@ -128,24 +128,24 @@
                 </configuration>
             </plugin>
             <!-- mybatis-generator -->
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>${mybatis-generator.version}</version>
-                <configuration>
-                    <verbose>true</verbose>
-                    <overwrite>true</overwrite>
-                    <configurationFile>${basedir}/build/mybatis/generator-config.xml</configurationFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>Generate MyBatis Artifacts</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.mybatis.generator</groupId>-->
+                <!--<artifactId>mybatis-generator-maven-plugin</artifactId>-->
+                <!--<version>${mybatis-generator.version}</version>-->
+                <!--<configuration>-->
+                    <!--<verbose>true</verbose>-->
+                    <!--<overwrite>true</overwrite>-->
+                    <!--<configurationFile>${basedir}/build/mybatis/generator-config.xml</configurationFile>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>Generate MyBatis Artifacts</id>-->
+                        <!--<goals>-->
+                            <!--<goal>generate</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <!-- war -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -514,6 +514,13 @@
         <!--<version>1.0.7</version>-->
         <!--</dependency>-->
 
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.servlet.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -562,6 +569,7 @@
         <jackson.version>1.9.13</jackson.version>
         <disruptor.verison>3.3.4</disruptor.verison>
         <mongodb.version>3.2.1</mongodb.version>
+        <tomcat.servlet.version>7.0.57</tomcat.servlet.version>
         <!-- plugin versions -->
         <clean.plugin.version>2.4.1</clean.plugin.version>
         <compiler.plugin.version>3.1</compiler.plugin.version>

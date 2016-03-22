@@ -1,5 +1,6 @@
 package com.tiger.restful.api.config;
 
+import com.tiger.restful.api.filter.DefaultFilter;
 import org.apache.logging.log4j.jul.LogManager;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.glassfish.jersey.filter.LoggingFilter;
@@ -17,8 +18,11 @@ public class ApiApplication extends ResourceConfig {
         // 注册数据转换器
         register(JacksonJsonProvider.class);
 
+        register(new DefaultFilter());
+
         // logging
         register(new LoggingFilter(LOGGER, false));
+
     }
 
 }

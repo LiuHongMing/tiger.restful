@@ -29,11 +29,11 @@ public class UserResource {
         try {
             userService.addUser();
         } catch (Exception e) {
-            throw new ApiException();
+            e.printStackTrace();
         }
         UserBean user = new UserBean();
         user.setId(val);
-        user.setName(name);
+        user.setName(name + "jrebel");
         return user;
     }
 
