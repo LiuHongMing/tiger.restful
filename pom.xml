@@ -520,11 +520,19 @@
         <!--<version>1.0.7</version>-->
         <!--</dependency>-->
 
+        <!-- tomcat -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
             <version>${tomcat.servlet.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.verion}</version>
         </dependency>
 
     </dependencies>
