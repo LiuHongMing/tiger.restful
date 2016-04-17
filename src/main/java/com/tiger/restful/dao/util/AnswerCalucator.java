@@ -7,13 +7,25 @@ public class AnswerCalucator {
 
     private int score = 0;
     private ExamPaper examPaper;
+    private AnswerExecutor executor;
 
     public AnswerCalucator(ExamPaper examPaper) {
+        this(examPaper, new SingleHandler());
+    }
+
+    public AnswerCalucator(ExamPaper examPaper, AnswerExecutor executor) {
         this.examPaper = examPaper;
+        this.executor = executor;
+        before();
+    }
+
+    public void before() {
+        if (executor != null)
+            score += executor.handle(examPaper);
     }
 
     public AnswerCalucator calucate(AnswerExecutor handler) {
-        score += handler.handle(this);
+        score += handler.handle(examPaper);
         return this;
     }
 

@@ -1,5 +1,6 @@
 package com.tiger.restful.dao.util;
 
+import com.alibaba.fastjson.JSONArray;
 import org.apache.log4j.Logger;
 
 /**
@@ -12,8 +13,10 @@ public class SingleHandler extends AbstractHandler {
     private int score = 2;
 
     @Override
-    public int handle(AnswerCalucator calucator) {
-        before(calucator.getExamPaper(), Question.SINGLE);
+    public int handle(ExamPaper examPaper) {
+        JSONArray userAnswer = examPaper.getUserAnswers(Question.SINGLE);
+        JSONArray examAnswer = examPaper.getExamAnswers(Question.SINGLE);
+
         int size = userAnswer.size();
         for (int i = 0; i < size; i++) {
             try {

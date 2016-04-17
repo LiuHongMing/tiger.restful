@@ -4,11 +4,12 @@
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--自定义属性配置器，优先加载-->
-    <bean id="propertyConfigurer" class="com.tiger.restful.config.ZkWatcher">
-        <property name="location" value="classpath:conf.properties"/>
-        <property name="order" value="1"/>
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    <bean id="myJavaBean" class="com.tiger.restful.config.MyJavaBean" init-method="initMethod">
+        <property name="desc" value="原始的描述信息"/>
+        <property name="remark" value="原始的备注信息"/>
     </bean>
+    <bean id="myInstantiationAwareBeanPostProcessor" class="com.tiger.restful.config.MyInstantiationAwareBeanPostProcessor"/>
+    <bean id="myBeanFactoryPostProcessor" class="com.tiger.restful.config.MyBeanFactoryPostProcessor"/>
+    <bean id="myBeanPostProcessor" class="com.tiger.restful.config.MyBeanPostProcessor"/>
 
 </beans>

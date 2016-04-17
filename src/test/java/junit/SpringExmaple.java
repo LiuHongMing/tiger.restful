@@ -5,7 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SpringExmaple {
 
     public static void main(String[] args) {
-        new ClassPathXmlApplicationContext("classpath*:spring/zookeeper-context.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath*:spring/zookeeper-context.xml");
+        ctx.start();
     }
 
 }

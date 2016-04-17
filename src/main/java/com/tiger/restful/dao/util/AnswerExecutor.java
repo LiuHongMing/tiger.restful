@@ -5,6 +5,6 @@ package com.tiger.restful.dao.util;
  */
 public interface AnswerExecutor {
 
-    int handle(AnswerCalucator calucator);
+    int handle(ExamPaper examPaper);
 
 }

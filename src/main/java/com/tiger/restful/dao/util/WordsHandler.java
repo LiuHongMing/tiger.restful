@@ -1,5 +1,6 @@
 package com.tiger.restful.dao.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.tiger.restful.utils.StringUtil;
 
 import java.util.Iterator;
@@ -12,8 +13,10 @@ public class WordsHandler extends AbstractHandler {
     private int score = 5;
 
     @Override
-    public int handle(AnswerCalucator calucator) {
-        before(calucator.getExamPaper(), Question.WORDS);
+    public int handle(ExamPaper examPaper) {
+        JSONArray userAnswer = examPaper.getUserAnswers(Question.WORDS);
+        JSONArray examAnswer = examPaper.getExamAnswers(Question.WORDS);
+
         Iterator<Object> iter = userAnswer.iterator();
         while(iter.hasNext()) {
             String content = (String) iter.next();
