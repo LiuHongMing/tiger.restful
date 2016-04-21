@@ -1,4 +1,4 @@
-package junit;
+package demo.springframework;
 
 import com.tiger.restful.service.BookService;
 import com.tiger.restful.service.OrderService;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/root-context.xml"})
-public class SpringTransactionPropagateTest {
+public class TransactionPropagate {
 
     @Autowired
     UserService userService;

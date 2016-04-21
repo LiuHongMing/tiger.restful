@@ -4,12 +4,4 @@
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="myJavaBean" class="com.tiger.restful.config.MyJavaBean" init-method="initMethod">
-        <property name="desc" value="原始的描述信息"/>
-        <property name="remark" value="原始的备注信息"/>
-    </bean>
-    <bean id="myInstantiationAwareBeanPostProcessor" class="com.tiger.restful.config.MyInstantiationAwareBeanPostProcessor"/>
-    <bean id="myBeanFactoryPostProcessor" class="com.tiger.restful.config.MyBeanFactoryPostProcessor"/>
-    <bean id="myBeanPostProcessor" class="com.tiger.restful.config.MyBeanPostProcessor"/>
-
 </beans>
