@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="myJavaBean" class="demo.beans.MyJavaBean" init-method="initMethod">
+        <property name="desc" value="原始的描述信息"/>
+        <property name="remark" value="原始的备注信息"/>
+    </bean>
+    <bean id="myInstantiationAwareBeanPostProcessor"
+          class="demo.springframework.beans.MyInstantiationAwareBeanPostProcessor"/>
+    <bean id="myBeanFactoryPostProcessor" class="demo.springframework.beans.MyBeanFactoryPostProcessor"/>
+    <bean id="myBeanPostProcessor" class="demo.springframework.beans.MyBeanPostProcessor"/>
+
+</beans>
