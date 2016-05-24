@@ -15,11 +15,17 @@
         This setting forces generated keys to be used if set to true,
          as some drivers deny compatibility but still work -->
         <setting name="useGeneratedKeys" value="true"/>
+
+        <setting name="logImpl" value="LOG4J2"/>
     </settings>
 
     <!-- Continue going here -->
     <typeAliases>
 
     </typeAliases>
+
+    <plugins>
+        <plugin interceptor="com.tiger.restful.dao.util.PaginationInterceptor"></plugin>
+    </plugins>
 
 </configuration>
