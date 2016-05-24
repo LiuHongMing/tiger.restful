@@ -8,6 +8,8 @@
         <property name="desc" value="原始的描述信息"/>
         <property name="remark" value="原始的备注信息"/>
     </bean>
+    <bean id="myBeanDefinitionRegistryPostProcessor"
+          class="demo.springframework.beans.MyBeanDefinitionRegistryPostProcessor"/>
     <bean id="myInstantiationAwareBeanPostProcessor"
           class="demo.springframework.beans.MyInstantiationAwareBeanPostProcessor"/>
     <bean id="myBeanFactoryPostProcessor" class="demo.springframework.beans.MyBeanFactoryPostProcessor"/>
