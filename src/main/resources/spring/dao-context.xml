@@ -3,7 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -11,86 +10,55 @@
            http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <!-- XA数据源 -->
-    <bean id="atomikosDataSource_1" class="com.atomikos.jdbc.AtomikosDataSourceBean"
-          init-method="init" destroy-method="close">
-        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
-        <property name="uniqueResourceName" value="cinyi_zhyxh1"/>
-        <property name="xaProperties">
-            <props>
-                <prop key="url">
-                    jdbc:mysql://172.16.230.44:3306/cinyi_zhyxh?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
-                </prop>
-                <prop key="user">cinyi</prop>
-                <prop key="password">^YHNJI(</prop>
-            </props>
-        </property>
-        <property name="poolSize" value="10"/>
-        <property name="reapTimeout" value="20000"/>
+    <!-- datasource -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://mysql-server:3306/db_write?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+        <property name="username" value="senyint"/>
+        <property name="password" value="^YHNJI("/>
+        <property name="initialSize" value="10"/>
+        <property name="maxActive" value="100"/>
+        <property name="minIdle" value="0"/>
+        <property name="maxWait" value="60000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="1800"/>
+        <property name="logAbandoned" value="true"/>
+        <property name="filters" value="mergeStat"/>
     </bean>
 
-    <bean id="sqlSessionFactory_1" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="atomikosDataSource_1"/>
+    <!-- mybatis -->
+    <mybatis:scan base-package="com.tiger.restful.user.mapper"/>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:orm/mybatis-config.xml"/>
-        <property name="typeAliasesPackage" value="com.tiger.restful.user.model"/>
         <property name="mapperLocations">
             <list>
                 <value>classpath*:com/tiger/restful/user/mapper/*.xml</value>
             </list>
         </property>
     </bean>
-    <mybatis:scan base-package="com.tiger.restful.user.mapper" factory-ref="sqlSessionFactory_1"/>
 
-    <bean id="atomikosDataSource_2" class="com.atomikos.jdbc.AtomikosDataSourceBean"
-          init-method="init" destroy-method="close">
-        <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
-        <property name="uniqueResourceName" value="cinyi_zhyxh2"/>
-        <property name="xaProperties">
-            <props>
-                <prop key="url">
-                    jdbc:mysql://172.16.230.44:3306/cinyi_zhyxh?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
-                </prop>
-                <prop key="user">cinyi</prop>
-                <prop key="password">^YHNJI(</prop>
-            </props>
-        </property>
-        <property name="poolSize" value="10"/>
-        <property name="reapTimeout" value="20000"/>
+    <!-- transaction -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="sqlSessionFactory_2" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="atomikosDataSource_2"/>
-        <property name="configLocation" value="classpath:orm/mybatis-config.xml"/>
-        <property name="typeAliasesPackage" value="com.tiger.restful.order.model"/>
-        <property name="mapperLocations">
-            <list>
-                <value>classpath*:com/tiger/restful/order/mapper/*.xml</value>
-            </list>
-        </property>
-    </bean>
-    <mybatis:scan base-package="com.tiger.restful.order.mapper" factory-ref="sqlSessionFactory_2"/>
-
-    <!-- atomikos 事务管理器 -->
-    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
-          init-method="init" destroy-method="close" p:forceShutdown="true"/>
-
-    <bean id="atomikosUserTranscation" class="com.atomikos.icatch.jta.UserTransactionImp" p:transactionTimeout="300"/>
-
-    <!-- spring 事务管理器 -->
-    <bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
-        <property name="transactionManager" ref="atomikosTransactionManager"/>
-        <property name="userTransaction" ref="atomikosUserTranscation"/>
-        <property name="allowCustomIsolationLevels" value="true"/>
-    </bean>
-
-    <!-- 事务通知 -->
-    <tx:advice id="txAdvice" transaction-manager="jtaTransactionManager">
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
+            <tx:method name="addUser" propagation="REQUIRED"/>
+            <tx:method name="addBook" propagation="REQUIRED"/>
             <tx:method name="addUserBook" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
 
-    <!-- 开启注解方式定义事务 -->
-    <tx:annotation-driven transaction-manager="jtaTransactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>
