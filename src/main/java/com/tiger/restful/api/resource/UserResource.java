@@ -1,6 +1,5 @@
 package com.tiger.restful.api.resource;
 
-import com.tiger.restful.api.exception.ApiException;
 import com.tiger.restful.api.view.UserBean;
 import com.tiger.restful.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -17,8 +16,8 @@ public class UserResource {
 
     private static final Logger logger = LogManager.getLogger(UserResource.class);
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,7 +26,7 @@ public class UserResource {
             @DefaultValue("jason") @QueryParam("name") String name) {
         logger.info(val + "," + name);
         try {
-            userService.addUser();
+//            userService.addUser();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +46,7 @@ public class UserResource {
         return user;
     }
 
+    @SuppressWarnings("RestParamTypeInspection")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)

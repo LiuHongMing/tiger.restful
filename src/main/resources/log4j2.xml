@@ -3,7 +3,7 @@
 
     <Properties>
         <Property name="log_pattern">%d [%level] %logger{36}(%F\:%L) [%t] - %msg%throwable%n</Property>
-        <Property name="log_home">e:/workspace/tiger.restful/logs</Property>
+        <Property name="log_home">../tiger.restful/logs</Property>
         <Property name="out_log">${log_home}/out.log</Property>
         <Property name="api_log">${log_home}/api.log</Property>
     </Properties>
